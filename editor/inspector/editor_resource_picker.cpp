@@ -408,6 +408,8 @@ void EditorResourcePicker::_update_menu_items() {
 		if (paste_valid) {
 			edit_menu->add_icon_item(get_editor_theme_icon(SNAME("ActionPaste")), TTRC("Paste"), OBJ_MENU_PASTE);
 			edit_menu->add_icon_item(get_editor_theme_icon(SNAME("ActionPaste")), TTRC("Paste as Unique"), OBJ_MENU_PASTE_AS_UNIQUE);
+			edit_menu->add_icon_item(get_editor_theme_icon(SNAME("ActionPaste")), TTRC("Swap"), OBJ_MENU_SWAP);
+			edit_menu->add_icon_item(get_editor_theme_icon(SNAME("ActionPaste")), TTRC("Swap as Unique"), OBJ_MENU_SWAP_AS_UNIQUE);
 		}
 	}
 
@@ -592,6 +594,19 @@ void EditorResourcePicker::_edit_menu_cbk(int p_which) {
 			} else {
 				_edit_menu_cbk(OBJ_MENU_MAKE_UNIQUE);
 			}
+		} break;
+
+		case OBJ_MENU_SWAP: {
+			Ref<Resource> original_editing_resource = edited_resource;
+			_edit_menu_cbk(OBJ_MENU_PASTE);
+			EditorSettings::get_singleton()->set_resource_clipboard(original_editing_resource);
+
+		} break;
+
+		case OBJ_MENU_SWAP_AS_UNIQUE: {
+			Ref<Resource> original_editing_resource = edited_resource;
+			_edit_menu_cbk(OBJ_MENU_PASTE_AS_UNIQUE);
+			EditorSettings::get_singleton()->set_resource_clipboard(original_editing_resource);
 		} break;
 
 		case OBJ_MENU_SHOW_IN_FILE_SYSTEM: {
